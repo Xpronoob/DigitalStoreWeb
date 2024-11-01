@@ -1,4 +1,4 @@
-import Navigation from '@/components/ui/Public/Navigation';
+import Navigation from '@/components/Public/Navigation';
 import { Outlet } from 'react-router-dom';
 
 function PublicLayout() {
