@@ -1,7 +1,7 @@
 import { Control, Controller, FieldError, FieldValues } from 'react-hook-form';
 
 interface Props<T extends FieldValues> {
-  name: keyof T;
+  fieldKey: keyof T;
   control: Control<T>;
   label: string;
   type?: string;
@@ -9,7 +9,7 @@ interface Props<T extends FieldValues> {
 }
 
 const InputForm = <T extends FieldValues>({
-  name,
+  fieldKey,
   control,
   label,
   type,
@@ -17,13 +17,13 @@ const InputForm = <T extends FieldValues>({
 }: Props<T>) => {
   return (
     <div className='form-group'>
-      <label htmlFor={String(name)}>{label}</label>
+      <label htmlFor={String(fieldKey)}>{label}</label>
       <Controller
-        name={name as any}
+        name={fieldKey as any}
         control={control}
         render={({ field }) => (
           <input
-            id={String(name)}
+            id={String(fieldKey)}
             type={type}
             {...field}
             className={`form-control ${error ? 'is-invalid' : ''}`}
