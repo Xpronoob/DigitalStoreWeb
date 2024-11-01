@@ -20,32 +20,18 @@ const LoginForm = () => {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <InputForm<FormValues>
-        name='name'
-        control={control}
-        label='Name'
-        type='text'
-        error={errors.name}
-      />
-      <InputForm<FormValues>
-        name='email'
+        fieldKey='email'
         control={control}
         label='Email'
         type='email'
         error={errors.email}
       />
       <InputForm<FormValues>
-        name='password'
+        fieldKey='password'
         control={control}
         label='Password'
         type='password'
         error={errors.password}
-      />
-      <InputForm<FormValues>
-        name='confirmPassword'
-        control={control}
-        label='Confirm Password'
-        type='password'
-        error={errors.confirmPassword}
       />
       <button type='submit'> Submit</button>
     </form>
