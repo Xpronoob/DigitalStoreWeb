@@ -1,50 +1,68 @@
-# React + TypeScript + Vite
+# Ecommerce React
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Este es un proyecto de ecommerce desarrollado con **React**, **TypeScript** y **Vite**. Incluye autenticación de usuario (login, registro y logout), administración del estado con **Zustand**, manejo de solicitudes HTTP con **Axios**, y estilos con **TailwindCSS**. La validación de formularios se realiza con **Zod**, utilizando **React Hook Form** para su manejo, y **React Router** para el enrutamiento.
 
-Currently, two official plugins are available:
+## Características
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Autenticación**: Funcionalidades de login, registro y logout.
+- **Manejo del Estado Global**: Implementado con **Zustand** para gestionar el estado del usuario autenticado.
+- **Solicitudes HTTP**: Realizadas con **Axios** para interactuar con el backend.
+- **Estilos**: Aplicados con **TailwindCSS** y complementados con **tailwind-merge** y **clsx** para optimizar la gestión de clases.
+- **Validación de Formularios**: Validaciones con **Zod** y manejo de formularios con **React Hook Form**.
+- **Enrutamiento**: Configurado con **React Router**.
+- **Vite**: Configuración rápida y ligera para el desarrollo y compilación.
 
-## Expanding the ESLint configuration
+<!-- ## Tecnologías Utilizadas
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+- **React 18**
+- **TypeScript**
+- **Vite**
+- **Axios**
+- **TailwindCSS**
+- **Zod**
+- **Zustand**
+- **React Hook Form**
+- **React Router**
+- **ESLint** (para asegurar la calidad del código) -->
 
-- Configure the top-level `parserOptions` property like this:
+## Instalación y Configuración
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+1. Clona el repositorio:
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+   ```bash
+   git clone https://github.com/Xpronoob/Ecommerce-React.git
+   cd ecommerce-react
+   ```
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+2. Instala las dependencias:
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+   ```bash
+   npm install
+   ```
+
+3. Servidor de desarrollo:
+
+   ```bash
+   npm run dev
+   ```
+
+## Scripts Disponibles
+
+- `npm run dev`: Inicia el servidor de desarrollo de Vite.
+- `npm run build`: Compila el proyecto para producción.
+- `npm run preview`: Sirve la aplicación compilada en un entorno de vista previa.
+- `npm run lint`: Ejecuta ESLint en el proyecto para identificar errores de formato.
+
+## Contribuir
+
+Las contribuciones son bienvenidas. Si deseas contribuir:
+
+1. Haz un fork del proyecto.
+2. Crea una nueva rama (`git checkout -b feature/nueva-funcionalidad`).
+3. Haz commit de tus cambios (`git commit -m 'Agrega nueva funcionalidad'`).
+4. Sube tu rama (`git push origin feature/nueva-funcionalidad`).
+5. Abre un Pull Request.
+
+## Licencia
+
+Este proyecto está bajo la licencia unknown. Consulta el archivo `LICENSE` para más detalles.
