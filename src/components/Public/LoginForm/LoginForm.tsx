@@ -54,7 +54,6 @@ const LoginForm = () => {
         />
         <button type='submit'> Submit</button>
       </form>
-      {/* <p>{customError}</p> */}
       {customError && <p>{customError}</p>}
     </>
   );
