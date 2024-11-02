@@ -46,7 +46,15 @@ function Navigation() {
           </Link>
         </>
       ) : (
-        <button onClick={onLogout}>Logout</button>
+        <>
+          <Link
+            to='private/profile'
+            className='text-gray-800 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-base font-medium'
+          >
+            Profile
+          </Link>
+          <button onClick={onLogout}>Logout</button>
+        </>
       )}
     </div>
   );
