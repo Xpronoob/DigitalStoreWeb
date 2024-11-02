@@ -2,8 +2,18 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { FormValues, schema } from './registerFormModel';
 import InputForm from '@/components/ui/InputForm';
+import { AuthService } from '@/services/auth.service';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useUserStore } from '@/states/userStore.states';
 
 const RegisterForm = () => {
+  const [customError, setCustomError] = useState('');
+
+  const navigate = useNavigate();
+
+  const setUser = useUserStore((state) => state.setUser);
+
   const {
     control,
     handleSubmit,
@@ -14,7 +24,15 @@ const RegisterForm = () => {
   });
 
   const onSubmit: SubmitHandler<FormValues> = (data) => {
-    console.log(data);
+    AuthService.postRegister(data)
+      .then((response) => {
+        setUser(response.user);
+        navigate('/');
+      })
+      .catch((err) => {
+        setCustomError(err.response.data.message);
+        console.log(err);
+      });
   };
 
   return (
@@ -69,6 +87,7 @@ const RegisterForm = () => {
         error={errors.img}
       />
       <button type='submit'> Submit</button>
+      {customError && <p>{customError}</p>}
     </form>
   );
 };

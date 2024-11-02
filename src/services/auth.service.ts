@@ -12,6 +12,6 @@ export class AuthService {
   }
 
   static async getLogout() {
-    return await AxiosAdapter.getLogout('/auth/logout');
+    return await AxiosAdapter.getRequest('/auth/logout');
   }
 }
