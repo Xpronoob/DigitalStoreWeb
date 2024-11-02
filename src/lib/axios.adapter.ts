@@ -17,9 +17,4 @@ export class AxiosAdapter {
     const response = await axiosInstance.post(apiUrl + url, body);
     return response.data;
   }
-
-  static async getLogout(url: string) {
-    const response = await axiosInstance.get(apiUrl + url);
-    return response.data;
-  }
 }
