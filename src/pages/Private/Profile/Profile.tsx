@@ -1,5 +1,10 @@
+import ProfileInfo from '../../../components/Private/ProfileInfo/ProfileInfo';
 function Profile() {
-  return <div>PROFILE PAGE</div>;
+  return (
+    <>
+      <ProfileInfo />
+    </>
+  );
 }
 
 export default Profile;
