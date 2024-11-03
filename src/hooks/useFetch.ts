@@ -1,3 +1,4 @@
+import { AxiosAdapter } from '@/lib/axios.adapter';
 import { useEffect, useState } from 'react';
 
 type Data<T> = T | null;
@@ -21,14 +22,9 @@ export const useFetch = <T>(url: string): Params<T> => {
 
     const fetchData = async () => {
       try {
-        const response = await fetch(url, controller);
+        const response = await AxiosAdapter.getRequest(url);
 
-        if (!response.ok) {
-          throw new Error('Error en la petición');
-        }
-
-        const jsonData: T = await response.json();
-
+        const jsonData: T = response;
         setData(jsonData);
         setError(null);
       } catch (err) {
