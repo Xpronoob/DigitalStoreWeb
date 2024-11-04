@@ -2,17 +2,37 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { FormValues, schema } from './registerFormModel';
 import InputForm from '@/components/ui/InputForm';
-import { AuthService } from '@/services/auth.service';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useUserStore } from '@/states/userStore.states';
+import { useQuery } from '@/hooks/useQuery';
+import { userModel } from '@/models/user.models';
 
 const RegisterForm = () => {
   const [customError, setCustomError] = useState('');
+  const [isSubmitted, setIsSubmitted] = useState(false);
+
+  const [bodyData, setBodyData] = useState<userModel | undefined>(undefined);
 
   const navigate = useNavigate();
-
   const setUser = useUserStore((state) => state.setUser);
+
+  const { data, loading, error } = useQuery<userModel>(
+    '/auth/register',
+    'POST',
+    bodyData,
+    isSubmitted
+  );
+
+  useEffect(() => {
+    if (data) {
+      setUser(data);
+      navigate('/');
+    } else if (error && isSubmitted) {
+      setCustomError(error);
+      // console.log(error);
+    }
+  }, [data, error, setUser, navigate]);
 
   const {
     control,
@@ -23,16 +43,19 @@ const RegisterForm = () => {
     mode: 'onBlur'
   });
 
-  const onSubmit: SubmitHandler<FormValues> = (data) => {
-    AuthService.postRegister(data)
-      .then((response) => {
-        setUser(response.user);
-        navigate('/');
-      })
-      .catch((err) => {
-        setCustomError(err.response.data.message);
-        console.log(err);
-      });
+  const onSubmit: SubmitHandler<userModel> = (formData) => {
+    setBodyData(formData);
+    setIsSubmitted(true);
+
+    // AuthService.postRegister(data)
+    //   .then((response) => {
+    //     setUser(response.user);
+    //     navigate('/');
+    //   })
+    //   .catch((err) => {
+    //     setCustomError(err.response.data.message);
+    //     console.log(err);
+    //   });
   };
 
   return (
@@ -87,7 +110,8 @@ const RegisterForm = () => {
         error={errors.img}
       />
       <button type='submit'> Submit</button>
-      {customError && <p>{customError}</p>}
+      {loading && <p>Cargando...</p>}
+      {isSubmitted && customError && <p>{customError}</p>}
     </form>
   );
 };
