@@ -17,4 +17,13 @@ export class AxiosAdapter {
     const response = await axiosInstance.post(apiUrl + url, body);
     return response.data;
   }
+
+  static async genericRequest(url: string, method: string, body: any = null) {
+    if (method === 'POST') {
+      const response = await axiosInstance.post(url, body);
+      return response.data;
+    }
+    const response = await axiosInstance.get(url);
+    return response.data;
+  }
 }
