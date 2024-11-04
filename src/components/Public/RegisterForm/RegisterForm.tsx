@@ -12,10 +12,10 @@ const RegisterForm = () => {
   const [customError, setCustomError] = useState('');
   const [isSubmitted, setIsSubmitted] = useState(false);
 
-  const [bodyData, setBodyData] = useState<userModel | undefined>(undefined);
-
   const navigate = useNavigate();
   const setUser = useUserStore((state) => state.setUser);
+
+  const [bodyData, setBodyData] = useState<userModel | undefined>(undefined);
 
   const { data, loading, error } = useQuery<userModel>(
     '/auth/register',
@@ -43,7 +43,7 @@ const RegisterForm = () => {
     mode: 'onBlur'
   });
 
-  const onSubmit: SubmitHandler<userModel> = (formData) => {
+  const onSubmit: SubmitHandler<FormValues> = (formData) => {
     setBodyData(formData);
     setIsSubmitted(true);
 
