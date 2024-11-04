@@ -30,7 +30,7 @@ export const useQuery = <T>(
     const fetchData = async () => {
       try {
         const response = await AxiosAdapter.genericRequest(url, method, body);
-        console.log(response);
+        // console.log(response);
         const jsonData: T = response;
         setData(jsonData);
         setError(null);
