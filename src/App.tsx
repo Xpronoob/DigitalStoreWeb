@@ -29,7 +29,7 @@ function App() {
           </Route>
           {/* ADMIN */}
           <Route element={<RoleGuard roles={['dev', 'admin']} />}>
-            <Route element={<RoleGuard roles={['user']} />}>
+            <Route element={<RoleGuard roles={['admin_users']} />}>
               <Route path={'/admin/users/*'} element={<h1>AdminUsers</h1>} />
             </Route>
 
