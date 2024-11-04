@@ -1,7 +1,7 @@
-import Navigation from '@/components/Admin/Navigation';
+import Navigation from '@/components/Private/Navigation';
 import { Outlet } from 'react-router-dom';
 
-function AdminLayout() {
+function PrivateLayout() {
   return (
     <>
       <Navigation />
@@ -12,4 +12,4 @@ function AdminLayout() {
   );
 }
 
-export default AdminLayout;
+export default PrivateLayout;

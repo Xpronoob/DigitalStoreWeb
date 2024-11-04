@@ -1,5 +1,5 @@
-function Index() {
-  return <div>Index</div>;
-}
+const PublicIndex = () => {
+  return <div>Public Index</div>;
+};
 
-export default Index;
+export default PublicIndex;

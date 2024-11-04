@@ -30,32 +30,8 @@ function Navigation() {
       >
         Home
       </Link>
-      {!user ? (
-        <>
-          <Link
-            to='/login'
-            className='text-gray-800 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-base font-medium'
-          >
-            Login
-          </Link>
-          <Link
-            to='/register'
-            className='text-gray-800 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-base font-medium'
-          >
-            Register
-          </Link>
-        </>
-      ) : (
-        <>
-          <Link
-            to='/private/profile'
-            className='text-gray-800 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-base font-medium'
-          >
-            Profile
-          </Link>
-          <button onClick={onLogout}>Logout</button>
-        </>
-      )}
+
+      {user && <button onClick={onLogout}>Logout</button>}
 
       {user?.roles?.includes('admin') && (
         <Link
