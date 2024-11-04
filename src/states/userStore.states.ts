@@ -1,31 +1,25 @@
+import { userModel } from '@/models/user.models';
 import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
-
-interface User {
-  email: string;
-  first_name: string | null;
-  last_name: string | null;
-  phone_number: string | null;
-  roles: string[];
-  accessToken: string;
-  refreshToken: string;
-}
+import { devtools, persist } from 'zustand/middleware';
 
 interface UserState {
-  user: User | null;
-  setUser: (user: User) => void;
+  user: userModel | null;
+  setUser: (user: userModel) => void;
   clearUser: () => void;
 }
 
 export const useUserStore = create<UserState>()(
-  persist(
-    (set) => ({
-      user: null,
-      setUser: (user) => set({ user }),
-      clearUser: () => set({ user: null })
-    }),
-    {
-      name: 'user-auth'
-    }
+  devtools(
+    persist(
+      (set) => ({
+        user: null,
+        setUser: (user) => set({ user }),
+        clearUser: () => set({ user: null })
+      }),
+      {
+        name: 'user-auth'
+      }
+    ),
+    { name: 'UserStore' }
   )
 );
