@@ -1,16 +1,14 @@
-import { FormValues } from '@/components/Public/RegisterForm/registerFormModel';
-import { useFetch } from '@/hooks/useFetch';
+import { useQuery } from '@/hooks/useQuery';
+import { userModel } from '@/models/user.models';
 
 function ProfileInfo() {
-  const profileFetch = useFetch<FormValues>('/auth/profile');
-
-  const { data, loading, error } = profileFetch;
+  const { data, loading, error } = useQuery<userModel>('/auth/profile', 'GET');
 
   return (
     <>
       <p>Profile</p>
 
-      {/* {loading && <p>Loading...</p>} */}
+      {loading && <p>Loading...</p>}
       {data && <p>{JSON.stringify(data)}</p>}
       {error && <p>Error loading profile</p>}
     </>
