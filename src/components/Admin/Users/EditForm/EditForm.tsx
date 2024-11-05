@@ -4,12 +4,11 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import InputForm from '@/components/ui/InputForm';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { UserService } from '@/services/Admin/user.service';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { FormValues, schema } from './editFormModel';
 
 const EditForm = () => {
   const { id } = useParams<{ id: string }>();
-  const navigate = useNavigate();
   const [customError, setCustomError] = useState('');
 
   const {
@@ -51,7 +50,7 @@ const EditForm = () => {
     mutationFn: (updatedUser: FormValues) =>
       UserService.update(id!, updatedUser),
     onSuccess: () => {
-      navigate(`/admin/users/${id}`);
+      // navigate(`/admin/users/${id}`);
     },
     onError: (error: any) => {
       setCustomError(error.response?.data?.message || 'Ha ocurrido un error');
@@ -73,15 +72,15 @@ const EditForm = () => {
         label='Email'
         type='email'
         error={errors.email}
-        // disabled
+        disabled={true}
       />
-      <InputForm<FormValues>
+      {/* <InputForm<FormValues>
         fieldKey='password'
         control={control}
         label='Password'
         type='password'
         error={errors.password}
-      />
+      /> */}
       <InputForm<FormValues>
         fieldKey='active'
         control={control}
