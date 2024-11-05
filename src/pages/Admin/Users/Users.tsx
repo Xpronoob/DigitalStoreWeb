@@ -1,5 +1,11 @@
+import ListForm from '@/components/Admin/Users/ListForm/ListForm';
+
 const Users = () => {
-  return <div>ADMIN USERS</div>;
+  return (
+    <>
+      <ListForm />
+    </>
+  );
 };
 
 export default Users;

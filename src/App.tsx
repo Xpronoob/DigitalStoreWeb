@@ -24,6 +24,7 @@ const Profile = lazy(() => import('./pages/Private/Profile/Profile'));
 // ADMIN
 const AdminIndex = lazy(() => import('./pages/Admin/Index/Index'));
 const AdminUsers = lazy(() => import('./pages/Admin/Users/Users'));
+const AdminCreateUser = lazy(() => import('./pages/Admin/Users/Create'));
 
 function App() {
   return (
@@ -50,8 +51,11 @@ function App() {
               <Route index element={<AdminIndex />} />
               {/* ADMIN USERS */}
               <Route element={<RoleGuard roles={['admin_users']} />}>
-                <Route path={'/admin/layout'} element={<AdminLayout />} />
                 <Route path={'/admin/users'} element={<AdminUsers />} />
+                <Route
+                  path={'/admin/users/create'}
+                  element={<AdminCreateUser />}
+                />
               </Route>
             </Route>
             {/* <Route path={'/admin/*'} element={<h1>Admin</h1>} /> */}
