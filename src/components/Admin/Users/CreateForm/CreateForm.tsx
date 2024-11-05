@@ -43,7 +43,17 @@ const CreateForm = () => {
     formState: { errors }
   } = useForm<FormValues>({
     resolver: zodResolver(schema),
-    mode: 'onBlur'
+    mode: 'onBlur',
+    defaultValues: {
+      email: '',
+      password: '',
+      active: false,
+      confirmPassword: '',
+      first_name: '',
+      last_name: '',
+      phone_number: '',
+      img: ''
+    }
   });
 
   const onSubmit: SubmitHandler<FormValues> = (formData) => {
