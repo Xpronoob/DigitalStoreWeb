@@ -1,20 +1,11 @@
-import {
-  useQuery
-  // useMutation,
-  // useQueryClient,
-  // QueryClient,
-  // QueryClientProvider
-} from '@tanstack/react-query';
-
-// import { useQuery as useAxios } from '../../../hooks/useQuery';
-// import { userModel } from '@/models/user.models';
-import { AxiosAdapter } from '@/lib/axios.adapter';
+import { useQuery } from '@tanstack/react-query';
 import { userModel } from '@/models/user.models';
+import { UserService } from '@/services/Admin/user.service';
+import { useNavigate } from 'react-router-dom';
 
-const getUsers = async ({ queryKey }: { queryKey: string[] }) => {
-  const url = queryKey[0];
+const getUsers = async () => {
   try {
-    const response = await AxiosAdapter.getRequest(url);
+    const response = await UserService.getAll();
     // console.log(response.users);
     return response.users;
   } catch (err) {
@@ -24,6 +15,7 @@ const getUsers = async ({ queryKey }: { queryKey: string[] }) => {
 };
 
 const ListForm = () => {
+  const navigate = useNavigate();
   const query = useQuery({ queryKey: ['/admin/users'], queryFn: getUsers });
 
   if (query.isLoading) return <div>Loading...</div>;
@@ -37,7 +29,10 @@ const ListForm = () => {
           <p>{user.first_name}</p>
           <p>{user.last_name}</p>
           <p>{user.email}</p>
-          <p>{user.active}</p>
+          <p>{user.active ? 'Active' : 'Inactive'}</p>
+          <button onClick={() => navigate(`/admin/users/edit/${user.user_id}`)}>
+            Editar
+          </button>
         </div>
       ))}
     </>

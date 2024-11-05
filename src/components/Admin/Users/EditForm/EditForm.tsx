@@ -1,20 +1,31 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import {
-  FormValues,
-  schema
-} from '@/components/Admin/Users/CreateForm/createFormModel';
 import { zodResolver } from '@hookform/resolvers/zod';
 import InputForm from '@/components/ui/InputForm';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { UserService } from '@/services/Admin/user.service';
+import { useParams, useNavigate } from 'react-router-dom';
+import { FormValues, schema } from './editFormModel';
 
-const CreateForm = () => {
+const EditForm = () => {
+  const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
   const [customError, setCustomError] = useState('');
+
+  const {
+    data: user,
+    isLoading,
+    isError
+  } = useQuery({
+    queryKey: ['/admin/users', id],
+    queryFn: () => UserService.getById(id!),
+    enabled: !!id
+  });
 
   const {
     control,
     handleSubmit,
+    reset,
     formState: { errors }
   } = useForm<FormValues>({
     resolver: zodResolver(schema),
@@ -23,7 +34,6 @@ const CreateForm = () => {
       email: '',
       password: '',
       active: false,
-      confirmPassword: '',
       first_name: '',
       last_name: '',
       phone_number: '',
@@ -31,11 +41,17 @@ const CreateForm = () => {
     }
   });
 
+  useEffect(() => {
+    if (user) {
+      reset(user);
+    }
+  }, [user, reset]);
+
   const mutation = useMutation({
-    mutationFn: (newUser: FormValues) => UserService.create(newUser),
-    onSuccess: (data) => {
-      // setUser(data.data);
-      // navigate('/admin/users/:data.user_id');
+    mutationFn: (updatedUser: FormValues) =>
+      UserService.update(id!, updatedUser),
+    onSuccess: () => {
+      navigate(`/admin/users/${id}`);
     },
     onError: (error: any) => {
       setCustomError(error.response?.data?.message || 'Ha ocurrido un error');
@@ -46,6 +62,9 @@ const CreateForm = () => {
     mutation.mutate(formData);
   };
 
+  if (isLoading) return <div>Loading...</div>;
+  if (isError) return <div>Error al cargar el usuario.</div>;
+
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <InputForm<FormValues>
@@ -54,6 +73,7 @@ const CreateForm = () => {
         label='Email'
         type='email'
         error={errors.email}
+        // disabled
       />
       <InputForm<FormValues>
         fieldKey='password'
@@ -68,13 +88,6 @@ const CreateForm = () => {
         label='Status'
         type='checkbox'
         error={errors.active}
-      />
-      <InputForm<FormValues>
-        fieldKey='confirmPassword'
-        control={control}
-        label='Confirm Password'
-        type='password'
-        error={errors.confirmPassword}
       />
       <InputForm<FormValues>
         fieldKey='first_name'
@@ -105,14 +118,13 @@ const CreateForm = () => {
         error={errors.img}
       />
       <button type='submit' disabled={mutation.isPending}>
-        Submit
+        {mutation.isPending ? 'Actualizando...' : 'Actualizar'}
       </button>
 
-      {mutation.isPending && <p>Cargando...</p>}
       {customError && <p>{customError}</p>}
-      {mutation.isSuccess && <p>Usuario creado con éxito!</p>}
+      {mutation.isSuccess && <p>Usuario actualizado con éxito!</p>}
     </form>
   );
 };
 
-export default CreateForm;
+export default EditForm;

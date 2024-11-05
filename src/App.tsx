@@ -4,6 +4,7 @@ import { BrowserRouter, Route } from 'react-router-dom';
 import RoutesWithNotFound from './utils/RoutesWithNotFound.utility';
 import { AuthGuard } from './guards/auth.guard';
 import RoleGuard from './guards/role.guard';
+import EditForm from './components/Admin/Users/EditForm/EditForm';
 
 // LAYOUTS
 const PublicLayout = lazy(() => import('./layouts/PublicLayout/PublicLayout'));
@@ -56,6 +57,7 @@ function App() {
                   path={'/admin/users/create'}
                   element={<AdminCreateUser />}
                 />
+                <Route path='/admin/users/edit/:id' element={<EditForm />} />
               </Route>
             </Route>
             {/* <Route path={'/admin/*'} element={<h1>Admin</h1>} /> */}

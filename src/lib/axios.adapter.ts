@@ -9,21 +9,28 @@ const axiosInstance = axios.create({
 
 export class AxiosAdapter {
   static async getRequest(url: string) {
-    const response = await axiosInstance.get(apiUrl + url);
+    const response = await axiosInstance.get(url);
     return response.data;
   }
 
   static async postRequest(url: string, body: any) {
-    const response = await axiosInstance.post(apiUrl + url, body);
+    const response = await axiosInstance.post(url, body);
+    return response.data;
+  }
+
+  static async patchRequest(url: string, body: any) {
+    const response = await axiosInstance.patch(url, body);
+    return response.data;
+  }
+
+  static async deleteRequest(url: string) {
+    const response = await axiosInstance.delete(url);
     return response.data;
   }
 
   static async genericRequest(url: string, method: string, body: any = null) {
-    if (method === 'POST') {
-      const response = await axiosInstance.post(url, body);
-      return response.data;
-    }
-    const response = await axiosInstance.get(url);
+    const config = { method, url, data: body };
+    const response = await axiosInstance.request(config);
     return response.data;
   }
 }
