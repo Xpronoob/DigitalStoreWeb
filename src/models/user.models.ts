@@ -1,5 +1,5 @@
 export interface userModel {
-  user_id?: string;
+  user_id?: number;
   email?: string;
   password?: string;
   active?: boolean;

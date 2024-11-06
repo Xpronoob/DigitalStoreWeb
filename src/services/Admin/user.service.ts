@@ -11,7 +11,7 @@ export class UserService {
     return await AxiosAdapter.patchRequest(`/admin/users/${id}`, data);
   }
 
-  static async delete(id: string) {
+  static async delete(id: number) {
     return await AxiosAdapter.deleteRequest(`/admin/users/${id}`);
   }
 
