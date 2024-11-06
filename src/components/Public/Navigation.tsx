@@ -12,13 +12,17 @@ function Navigation() {
 
   const clearUser = useUserStore((state) => state.clearUser);
 
-  const onLogout = () => {
-    AuthService.getLogout().then(() => {
+  const onLogout = async () => {
+    try {
+      await AuthService.getLogout();
+    } catch (error) {
+      console.error('Error in logout via AuthService:', error);
+    } finally {
       clearUser();
       localStorage.removeItem('user-auth');
-      useUserStore.persist.clearStorage();
+      await useUserStore.persist.clearStorage();
       navigate('/login');
-    });
+    }
   };
 
   return (
