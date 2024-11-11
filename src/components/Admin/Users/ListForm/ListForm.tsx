@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { userModel } from '@/models/user.models';
+import { userModel } from '@/models/role.models';
 import { UserService } from '@/services/Admin/user.service';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';

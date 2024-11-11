@@ -1,5 +1,5 @@
 import { useQuery } from '@/hooks/useQuery';
-import { userModel } from '@/models/user.models';
+import { userModel } from '@/models/role.models';
 
 function ProfileInfo() {
   const { data, loading, error } = useQuery<userModel>('/auth/profile', 'GET');
