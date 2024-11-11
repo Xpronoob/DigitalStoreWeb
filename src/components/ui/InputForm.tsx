@@ -28,16 +28,32 @@ const InputForm = <T extends FieldValues>({
             id={String(fieldKey)}
             type={type}
             {...field}
+            checked={type === 'checkbox' ? field.value : undefined}
+            value={
+              type === 'number' && field.value != null
+                ? field.value.toString()
+                : field.value ?? ''
+            }
+            onChange={(e) => {
+              const value = e.target.value;
+              if (type === 'number') {
+                field.onChange(Number(value));
+              } else if (type === 'checkbox') {
+                field.onChange(e.target.checked);
+              } else {
+                field.onChange(value);
+              }
+            }}
             className={`form-control ${
               error ? 'is-invalid' : ''
             } dark:bg-gray-800 m-1 p-1 ${
               disabled ? 'bg-gray-200 dark:bg-gray-600' : ''
             }`}
-            checked={field.value}
             disabled={disabled}
           />
         )}
       />
+
       {error && <p className='error'>{error.message}</p>}
     </div>
   );
