@@ -6,6 +6,7 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
 import { FormValues, schema } from './editFormModel';
 import { CategoryService } from '@/services/Admin/category.service';
+import { typeMapper } from '@/utils/typeMapper';
 
 const EditForm = () => {
   const { id } = useParams<{ id: string }>();
@@ -38,7 +39,7 @@ const EditForm = () => {
 
   useEffect(() => {
     if (category) {
-      reset(category);
+      reset(typeMapper(category));
     }
   }, [category, reset]);
 

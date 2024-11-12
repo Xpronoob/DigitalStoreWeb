@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useUserStore } from '@/states/userStore.states';
 import { useQuery } from '@/hooks/useQuery';
-import { userModel } from '@/models/role.models';
+import { userModel } from '@/models/user.models';
 
 const RegisterForm = () => {
   const [customError, setCustomError] = useState('');
