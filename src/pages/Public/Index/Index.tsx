@@ -1,5 +1,11 @@
+import ProductList from '@/components/Public/ProductsList/ProductsList';
+
 const PublicIndex = () => {
-  return <div>Public Index</div>;
+  return (
+    <>
+      <ProductList />
+    </>
+  );
 };
 
 export default PublicIndex;

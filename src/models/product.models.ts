@@ -8,4 +8,5 @@ export interface productModel {
   stock?: number;
   img?: string;
   active?: boolean;
+  categories?: { category_id: number; category_name?: string };
 }
