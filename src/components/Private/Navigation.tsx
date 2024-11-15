@@ -1,5 +1,6 @@
 import { useDarkMode } from '@/hooks/useDarkMode';
 import { AuthService } from '@/services/auth.service';
+import { useCartStore } from '@/states/cartStore.states';
 import { useUserStore } from '@/states/userStore.states';
 import { Link, useNavigate } from 'react-router-dom';
 
@@ -9,14 +10,19 @@ function Navigation() {
   const navigate = useNavigate();
 
   const user = useUserStore((state) => state.user);
+  const cart = useCartStore((state) => state.items);
 
   const clearUser = useUserStore((state) => state.clearUser);
+  const clearCart = useCartStore((state) => state.clearCart);
 
   const onLogout = () => {
     AuthService.getLogout().then(() => {
       clearUser();
+      clearCart();
       localStorage.removeItem('user-auth');
+      localStorage.removeItem('cart-items');
       useUserStore.persist.clearStorage();
+      useCartStore.persist.clearStorage();
       navigate('/login');
     });
   };
