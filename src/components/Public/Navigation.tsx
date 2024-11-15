@@ -52,6 +52,7 @@ function Navigation({ toggleCart }: { toggleCart: () => void }) {
       localStorage.removeItem('cart-items');
       await useUserStore.persist.clearStorage();
       await useCartStore.persist.clearStorage();
+      cartQuery.refetch();
       navigate('/login');
     }
   };
