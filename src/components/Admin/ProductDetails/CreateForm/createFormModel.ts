@@ -6,7 +6,7 @@ export const schema = z.object({
       required_error: 'El producto es obligatorio'
     })
     .int(),
-  detail_name: z.string({
+  details_name: z.string({
     required_error: 'El nombre del detalle del producto es obligatorio'
   }),
   description: z.string().optional(),

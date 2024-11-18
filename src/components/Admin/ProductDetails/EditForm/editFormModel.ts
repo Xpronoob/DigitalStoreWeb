@@ -2,7 +2,7 @@ import { z } from 'zod';
 
 export const schema = z.object({
   product_id: z.number().int().optional(),
-  detail_name: z.string().optional(),
+  details_name: z.string().optional(),
   description: z.string().optional(),
   price: z.number().optional(),
   quantity: z.number().optional(),

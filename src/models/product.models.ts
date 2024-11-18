@@ -13,7 +13,7 @@ export interface productModel {
     {
       product_details_id?: number;
       product_id?: number;
-      detail_name?: string;
+      details_name?: string;
       description?: string;
       price?: number;
       quantity?: number;

@@ -6,7 +6,8 @@ import { AuthGuard } from './guards/auth.guard';
 import RoleGuard from './guards/role.guard';
 
 // LAYOUTS
-const PublicLayout = lazy(() => import('./layouts/PublicLayout/PublicLayout'));
+// const PublicLayout = lazy(() => import('./layouts/PublicLayout/PublicLayout'));
+import PublicLayout from './layouts/PublicLayout/PublicLayout';
 const AdminLayout = lazy(() => import('./layouts/AdminLayout/AdminLayout'));
 const PrivateLayout = lazy(
   () => import('./layouts/PrivateLayout/PrivateLayout')
@@ -77,6 +78,26 @@ const AdminCreateProductDetails = lazy(
 const EditProductDetailsForm = lazy(
   () => import('./components/Admin/ProductDetails/EditForm/EditForm')
 );
+
+// CLIENT
+
+// PRODUCTS
+// getProductById
+// getAllProducts
+// getProductsByCategory
+
+// CART ITEMS
+// addProductToCart
+// removeProductFromCart
+// getCart
+
+// Checkout
+// Pay
+
+// ORDERS
+// createOrder
+// getOrders
+// getOrderById
 
 function App() {
   return (

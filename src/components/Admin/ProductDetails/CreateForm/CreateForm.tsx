@@ -20,7 +20,7 @@ const CreateForm = () => {
     resolver: zodResolver(schema),
     mode: 'onBlur',
     defaultValues: {
-      detail_name: '',
+      details_name: '',
       description: '',
       price: 0,
       quantity: 0,
@@ -59,11 +59,11 @@ const CreateForm = () => {
       />
 
       <InputForm<FormValues>
-        fieldKey='detail_name'
+        fieldKey='details_name'
         control={control}
         label='Product Detail'
         type='text'
-        error={errors.detail_name}
+        error={errors.details_name}
       />
 
       <InputForm<FormValues>

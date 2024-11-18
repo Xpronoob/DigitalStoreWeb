@@ -1,6 +1,6 @@
 import { ProductService } from '@/services/Public/product.service';
 import { useUserStore } from '@/states/userStore.states';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import React from 'react';
 import { CartItemsModel } from '../../../models/cart-items.model';
 import { useCartStore } from '@/states/cartStore.states';
@@ -15,18 +15,24 @@ const ShoppingCart: React.FC<ShoppingCartProps> = ({
   toggleCart
 }) => {
   const user = useUserStore.getState().user;
-  const cart = useCartStore((state) => state.items);
+  const cartStore = useCartStore();
+  const { items, setItems, incrementQuantity, decrementQuantity, removeItem } =
+    cartStore;
+
+  const queryClient = useQueryClient();
 
   const getCart = async () => {
     try {
       if (user?.accessToken) {
         const response = await ProductService.getCart();
-        return response.cartItems;
+        const apiCart = response.cartItems;
+        setItems(apiCart);
+        return apiCart;
       } else {
-        return cart;
+        return items;
       }
     } catch (err) {
-      console.error(err);
+      console.error('Error fetching cart:', err);
       throw err;
     }
   };
@@ -34,7 +40,23 @@ const ShoppingCart: React.FC<ShoppingCartProps> = ({
   const cartQuery = useQuery({
     queryKey: ['/cart/getCart'],
     queryFn: getCart,
-    enabled: !!user // Only fetch if the user is logged in
+    enabled: !!user // Fetch only if the user is logged in
+  });
+
+  const mutationRemove = useMutation({
+    mutationFn: async ({
+      cart_items_id,
+      product_details_id
+    }: {
+      cart_items_id: number;
+      product_details_id: number;
+    }) => {
+      await removeItem(cart_items_id, product_details_id);
+    },
+    onSuccess: () => {
+      // queryClient.invalidateQueries(['/cart/getCart']);
+      queryClient.invalidateQueries({ queryKey: ['/cart/getCart'] });
+    }
   });
 
   if (cartQuery.isLoading) return <div>Loading...</div>;
@@ -50,16 +72,47 @@ const ShoppingCart: React.FC<ShoppingCartProps> = ({
         &times;
       </button>
       <h2 className='p-4 text-lg font-semibold'>Your Cart</h2>
-      <div>Cart Items</div>
-      {cartQuery?.data?.map((cartItems: CartItemsModel) =>
-        cartItems.cart_item_id !== undefined ? (
-          <div key={cartItems.cart_item_id} className='p-2'>
-            <p>Name: {cartItems.product_details?.detail_name}</p>
-            <p>Price: ${cartItems.product_details?.price}</p>
-            <p>Quantity: {cartItems.quantity}</p>
-          </div>
-        ) : null
-      )}
+      <div>
+        {items.length > 0
+          ? items.map((item: CartItemsModel) => (
+              <div key={item.product_details_id} className='p-2'>
+                <p>Name: {item.product_details?.details_name}</p>
+                <p>Price: ${item.product_details?.price}</p>
+                <p>Quantity: {item.quantity}</p>
+                <button
+                  onClick={() =>
+                    incrementQuantity(
+                      item.cart_items_id!,
+                      item.product_details_id
+                    )
+                  }
+                >
+                  ➕
+                </button>
+                <button
+                  onClick={() =>
+                    decrementQuantity(
+                      item.cart_items_id!,
+                      item.product_details_id
+                    )
+                  }
+                >
+                  ➖
+                </button>
+                <button
+                  onClick={() =>
+                    mutationRemove.mutate({
+                      cart_items_id: item.cart_items_id!,
+                      product_details_id: item.product_details_id
+                    })
+                  }
+                >
+                  🗑️
+                </button>
+              </div>
+            ))
+          : 'No items in the cart'}
+      </div>
     </div>
   );
 };

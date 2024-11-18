@@ -24,10 +24,11 @@ export class ProductService {
     return response;
   }
 
-  static async updateProductInCart(id: number, quantity: number) {
+  static async updateProductInCart(idCartItems: number, quantity: number) {
+    console.log('UpdateCart', idCartItems, quantity);
     const response = await AxiosAdapter.patchRequest(
-      `/client/cartItems/${id}`,
-      quantity
+      `/client/cartItems/${idCartItems}`,
+      { quantity }
     );
     return response;
   }

@@ -47,7 +47,7 @@ const ListForm = () => {
       {query?.data?.map((productDetails: productDetailsModel) => (
         <div key={productDetails.product_details_id} className='p-2'>
           <p>Product: {productDetails.product_id}</p>
-          <p>Name: {productDetails.detail_name}</p>
+          <p>Name: {productDetails.details_name}</p>
           <p>Description: {productDetails.description}</p>
           <p>Price: {productDetails.price}</p>
           <p>Quantity: {productDetails.quantity}</p>

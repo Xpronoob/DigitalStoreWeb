@@ -31,6 +31,7 @@ function Navigation({ toggleCart }: { toggleCart: () => void }) {
     }
   };
 
+  // todo: create endpoint for count cart items
   const cartQuery = useQuery({
     queryKey: ['/cart/getCart'],
     queryFn: getCart,
@@ -102,7 +103,9 @@ function Navigation({ toggleCart }: { toggleCart: () => void }) {
       )}
       <button onClick={toggleCart} className='btn-cart'>
         🛒
-        {cartQuery.data?.length > 0 ? `(${cartQuery.data?.length})` : ''}
+        {cartQuery.data?.length > 0
+          ? `(${cartQuery.data?.length})`
+          : cart.length}
       </button>
     </div>
   );
