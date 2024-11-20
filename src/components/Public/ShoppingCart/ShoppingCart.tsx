@@ -1,5 +1,3 @@
-import { ProductService } from '@/services/Public/product.service';
-import { useUserStore } from '@/states/userStore.states';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import React from 'react';
 import { CartItemsModel } from '../../../models/cart-items.model';
@@ -14,23 +12,16 @@ const ShoppingCart: React.FC<ShoppingCartProps> = ({
   isCartOpen,
   toggleCart
 }) => {
-  const user = useUserStore.getState().user;
+  // const user = useUserStore.getState().user;
   const cartStore = useCartStore();
-  const { items, setItems, incrementQuantity, decrementQuantity, removeItem } =
-    cartStore;
+  const { items, incrementQuantity, decrementQuantity, removeItem } = cartStore;
 
   const queryClient = useQueryClient();
 
   const getCart = async () => {
     try {
-      if (user?.accessToken) {
-        const response = await ProductService.getCart();
-        const apiCart = response.cartItems;
-        setItems(apiCart);
-        return apiCart;
-      } else {
-        return items;
-      }
+      await cartStore.syncUserCart();
+      return items;
     } catch (err) {
       console.error('Error fetching cart:', err);
       throw err;
@@ -39,8 +30,8 @@ const ShoppingCart: React.FC<ShoppingCartProps> = ({
 
   const cartQuery = useQuery({
     queryKey: ['/cart/getCart'],
-    queryFn: getCart,
-    enabled: !!user // Fetch only if the user is logged in
+    queryFn: getCart
+    // enabled: !!user // Fetch only if the user is logged in
   });
 
   const mutationRemove = useMutation({
@@ -76,6 +67,8 @@ const ShoppingCart: React.FC<ShoppingCartProps> = ({
         {items.length > 0
           ? items.map((item: CartItemsModel) => (
               <div key={item.product_details_id} className='p-2'>
+                <p>ID Detail: {item.product_details_id}</p>
+                <p>ID Cart: {item.cart_items_id}</p>
                 <p>Name: {item.product_details?.details_name}</p>
                 <p>Price: ${item.product_details?.price}</p>
                 <p>Quantity: {item.quantity}</p>

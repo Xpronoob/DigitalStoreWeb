@@ -2,19 +2,24 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { FormValues, schema } from './loginFormModel';
 import InputForm from '@/components/ui/InputForm';
-// import { AuthService } from '@/services/auth.service';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useUserStore } from '@/states/userStore.states';
 import { useQuery } from '@/hooks/useQuery';
 import { userModel } from '@/models/user.models';
+import { useQueryClient } from '@tanstack/react-query';
+import { useCartStore } from '@/states/cartStore.states';
 
 const LoginForm = () => {
   const [customError, setCustomError] = useState('');
   const [isSubmitted, setIsSubmitted] = useState(false);
 
+  const queryClient = useQueryClient();
+
   const navigate = useNavigate();
   const setUser = useUserStore((state) => state.setUser);
+
+  const { syncUserCartInAuthentication } = useCartStore();
 
   const [bodyData, setBodyData] = useState<userModel | undefined>(undefined);
 
@@ -28,10 +33,10 @@ const LoginForm = () => {
   useEffect(() => {
     if (data) {
       setUser(data);
+      syncUserCartInAuthentication();
       navigate('/');
     } else if (error && isSubmitted) {
       setCustomError(error);
-      // console.log(error);
     }
   }, [data, error, setUser, navigate]);
 
@@ -51,6 +56,7 @@ const LoginForm = () => {
   const onSubmit: SubmitHandler<FormValues> = (formData) => {
     setBodyData(formData);
     setIsSubmitted(true);
+    queryClient.invalidateQueries({ queryKey: ['/cart/getCart'] });
 
     // AuthService.postLogin(data)
     //   .then((response) => {

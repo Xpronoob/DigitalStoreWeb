@@ -21,6 +21,8 @@ interface CartState {
     product_details_id: number
   ) => Promise<void>;
   clearCart: () => void;
+  syncUserCartInAuthentication: () => void;
+  syncUserCart: () => void;
 }
 
 export const useCartStore = create<CartState>()(
@@ -28,7 +30,8 @@ export const useCartStore = create<CartState>()(
     persist(
       (set) => ({
         items: [],
-        addItem: async (item, queryClient?: any) => {
+
+        addItem: async (item) => {
           const user = useUserStore.getState().user;
 
           if (user) {
@@ -59,7 +62,10 @@ export const useCartStore = create<CartState>()(
             };
           });
         },
-        setItems: (items) => set({ items }),
+
+        setItems: (items) => {
+          set({ items });
+        },
 
         incrementQuantity: (cart_items_id, product_details_id) => {
           set((state) => ({
@@ -93,8 +99,43 @@ export const useCartStore = create<CartState>()(
             )
           }));
         },
+
         clearCart: () => {
           set({ items: [] });
+        },
+
+        syncUserCartInAuthentication: async () => {
+          const user = useUserStore.getState().user;
+          if (user?.accessToken) {
+            const cart = await ProductService.getCart();
+            if (cart.cartItems.length > 0) {
+              set({ items: cart.cartItems });
+            } else {
+              const currentItems = useCartStore.getState().items;
+              await Promise.all(
+                currentItems.map(async (item: CartItemsModel) => {
+                  try {
+                    await ProductService.addProductToCart(item);
+                    // console.log(`Producto agregado:`, item);
+                  } catch (error) {
+                    console.error(`Error al agregar producto:`, item, error);
+                  }
+                })
+              );
+            }
+          }
+        },
+
+        syncUserCart: async () => {
+          const user = useUserStore.getState().user;
+          if (user?.accessToken) {
+            const cart = await ProductService.getCart();
+            if (cart.cartItems.length > 0) {
+              set({ items: cart.cartItems });
+            } else {
+              set({ items: [] });
+            }
+          }
         }
       }),
       { name: 'cart-items' } // Key in localStorage

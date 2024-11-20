@@ -7,6 +7,8 @@ import { useNavigate } from 'react-router-dom';
 import { useUserStore } from '@/states/userStore.states';
 import { useQuery } from '@/hooks/useQuery';
 import { userModel } from '@/models/user.models';
+import { useCartStore } from '@/states/cartStore.states';
+import { useQueryClient } from '@tanstack/react-query';
 
 const RegisterForm = () => {
   const [customError, setCustomError] = useState('');
@@ -16,6 +18,8 @@ const RegisterForm = () => {
   const setUser = useUserStore((state) => state.setUser);
 
   const [bodyData, setBodyData] = useState<userModel | undefined>(undefined);
+
+  const { syncUserCartInAuthentication } = useCartStore.getState();
 
   const { data, loading, error } = useQuery<userModel>(
     '/auth/register',
@@ -27,10 +31,10 @@ const RegisterForm = () => {
   useEffect(() => {
     if (data) {
       setUser(data);
+      syncUserCartInAuthentication();
       navigate('/');
     } else if (error && isSubmitted) {
       setCustomError(error);
-      // console.log(error);
     }
   }, [data, error, setUser, navigate]);
 
