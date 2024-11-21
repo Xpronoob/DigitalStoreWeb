@@ -14,6 +14,8 @@ const RegisterForm = () => {
   const [customError, setCustomError] = useState('');
   const [isSubmitted, setIsSubmitted] = useState(false);
 
+  const queryClient = useQueryClient();
+
   const navigate = useNavigate();
   const setUser = useUserStore((state) => state.setUser);
 
@@ -31,7 +33,7 @@ const RegisterForm = () => {
   useEffect(() => {
     if (data) {
       setUser(data);
-      syncUserCartInAuthentication();
+      syncUserCartInAuthentication(queryClient);
       navigate('/');
     } else if (error && isSubmitted) {
       setCustomError(error);

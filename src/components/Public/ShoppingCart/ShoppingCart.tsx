@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import React from 'react';
+import React, { useState } from 'react';
 import { CartItemsModel } from '../../../models/cart-items.model';
 import { useCartStore } from '@/states/cartStore.states';
 
@@ -17,6 +17,8 @@ const ShoppingCart: React.FC<ShoppingCartProps> = ({
   const { items, incrementQuantity, decrementQuantity, removeItem } = cartStore;
 
   const queryClient = useQueryClient();
+
+  const [quantities, setQuantities] = useState<{ [key: number]: number }>({});
 
   const getCart = async () => {
     try {
@@ -50,6 +52,13 @@ const ShoppingCart: React.FC<ShoppingCartProps> = ({
     }
   });
 
+  const handleQuantityChange = (product_details_id: number, value: number) => {
+    setQuantities((prevQuantities) => ({
+      ...prevQuantities,
+      [product_details_id]: value
+    }));
+  };
+
   if (cartQuery.isLoading) return <div>Loading...</div>;
   if (cartQuery.isError) return <div>Error: {cartQuery.error.message}</div>;
 
@@ -76,17 +85,33 @@ const ShoppingCart: React.FC<ShoppingCartProps> = ({
                   onClick={() =>
                     incrementQuantity(
                       item.cart_items_id!,
-                      item.product_details_id
+                      item.product_details_id,
+                      quantities[item.product_details_id] || 1,
+                      queryClient
                     )
                   }
                 >
                   ➕
                 </button>
+                <input
+                  type='number'
+                  value={quantities[item.product_details_id] || 1}
+                  onChange={(e) =>
+                    handleQuantityChange(
+                      item.product_details_id!,
+                      Number(e.target.value)
+                    )
+                  }
+                  className='dark:text-black'
+                  min='1'
+                />
                 <button
                   onClick={() =>
                     decrementQuantity(
                       item.cart_items_id!,
-                      item.product_details_id
+                      item.product_details_id,
+                      quantities[item.product_details_id] || 1,
+                      queryClient
                     )
                   }
                 >

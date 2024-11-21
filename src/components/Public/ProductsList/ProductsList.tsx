@@ -54,7 +54,7 @@ const ProductList = () => {
     setQuantityTotalToAdd(quantityTotal);
 
     if (quantityTotal <= stock) {
-      await addItem(item, stock, queryClient);
+      await addItem(item, stock);
       await queryClient.invalidateQueries({
         queryKey: ['/cart/getCart']
       });

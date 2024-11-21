@@ -33,7 +33,7 @@ const LoginForm = () => {
   useEffect(() => {
     if (data) {
       setUser(data);
-      syncUserCartInAuthentication();
+      syncUserCartInAuthentication(queryClient);
       navigate('/');
     } else if (error && isSubmitted) {
       setCustomError(error);

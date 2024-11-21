@@ -6,22 +6,26 @@ import { CartItemsModel } from '@/models/cart-items.model';
 
 interface CartState {
   items: CartItemsModel[];
-  addItem: (item: CartItemsModel, quantity: number, queryClient: any) => void;
+  addItem: (item: CartItemsModel, quantity: number) => void;
   setItems: (items: CartItemsModel[]) => void;
   incrementQuantity: (
     cart_items_id: number,
-    product_details_id: number
+    product_details_id: number,
+    quantity: number,
+    queryClient: any
   ) => void;
   decrementQuantity: (
     cart_items_id: number,
-    product_details_id: number
+    product_details_id: number,
+    quantity: number,
+    queryClient: any
   ) => void;
   removeItem: (
     cart_items_id: number,
     product_details_id: number
   ) => Promise<void>;
   clearCart: () => void;
-  syncUserCartInAuthentication: () => void;
+  syncUserCartInAuthentication: (queryClient: any) => void;
   syncUserCart: () => void;
 }
 
@@ -67,25 +71,45 @@ export const useCartStore = create<CartState>()(
           set({ items });
         },
 
-        incrementQuantity: (cart_items_id, product_details_id) => {
+        incrementQuantity: async (
+          cart_items_id,
+          product_details_id,
+          quantity,
+          queryClient
+        ) => {
+          const user = useUserStore.getState().user;
+          if (user?.accessToken) {
+            await ProductService.updateProductInCart(cart_items_id, quantity);
+          }
           set((state) => ({
             items: state.items.map((item) =>
-              item.product_details_id === product_details_id
-                ? { ...item, quantity: item.quantity + 1 }
+              item.product_details_id === product_details_id && item.quantity
+                ? { ...item, quantity: item.quantity + quantity }
                 : item
             )
           }));
+          await queryClient.invalidateQueries({ queryKey: ['/cart/getCart'] });
         },
 
-        decrementQuantity: (cart_items_id, product_details_id) => {
+        decrementQuantity: async (
+          cart_items_id,
+          product_details_id,
+          quantity,
+          queryClient
+        ) => {
+          const user = useUserStore.getState().user;
+          if (user?.accessToken) {
+            await ProductService.updateProductInCart(cart_items_id, -quantity);
+          }
           set((state) => ({
             items: state.items.map((item) =>
               item.product_details_id === product_details_id &&
               item.quantity > 1
-                ? { ...item, quantity: item.quantity - 1 }
+                ? { ...item, quantity: item.quantity - quantity }
                 : item
             )
           }));
+          await queryClient.invalidateQueries({ queryKey: ['/cart/getCart'] });
         },
 
         removeItem: async (cart_items_id, product_details_id) => {
@@ -104,7 +128,7 @@ export const useCartStore = create<CartState>()(
           set({ items: [] });
         },
 
-        syncUserCartInAuthentication: async () => {
+        syncUserCartInAuthentication: async (queryClient) => {
           const user = useUserStore.getState().user;
           if (user?.accessToken) {
             const cart = await ProductService.getCart();
@@ -124,6 +148,7 @@ export const useCartStore = create<CartState>()(
               );
             }
           }
+          queryClient.invalidateQueries({ queryKey: ['/cart/getCart'] });
         },
 
         syncUserCart: async () => {

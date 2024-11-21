@@ -25,7 +25,6 @@ export class ProductService {
   }
 
   static async updateProductInCart(idCartItems: number, quantity: number) {
-    console.log('UpdateCart', idCartItems, quantity);
     const response = await AxiosAdapter.patchRequest(
       `/client/cartItems/${idCartItems}`,
       { quantity }
