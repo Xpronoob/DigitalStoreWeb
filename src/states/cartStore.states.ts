@@ -3,6 +3,7 @@ import { devtools, persist } from 'zustand/middleware';
 import { useUserStore } from './userStore.states';
 import { ProductService } from '@/services/Public/product.service';
 import { CartItemsModel } from '@/models/cart-items.model';
+import { productDetailsModel } from '@/models/product-details.models';
 
 interface CartState {
   items: CartItemsModel[];
@@ -160,6 +161,24 @@ export const useCartStore = create<CartState>()(
             } else {
               set({ items: [] });
             }
+          } else {
+            const updatedItems = await Promise.all(
+              useCartStore
+                .getState()
+                .items.map(async (item: CartItemsModel) => {
+                  const product: productDetailsModel =
+                    await ProductService.getProductDetailsById(
+                      item.product_details_id!
+                    );
+
+                  return {
+                    ...item,
+                    product_details: product
+                  };
+                })
+            );
+
+            set({ items: updatedItems });
           }
         }
       }),

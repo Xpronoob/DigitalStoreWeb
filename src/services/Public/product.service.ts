@@ -7,9 +7,9 @@ export class ProductService {
     return response;
   }
 
-  static async getProductById(id: number) {
+  static async getProductDetailsById(id: number) {
     const response = await AxiosAdapter.getRequest(
-      `/shop/getProductById/${id}`
+      `/shop/getProductDetailsById/${id}`
     );
     return response;
   }
