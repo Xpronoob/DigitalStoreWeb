@@ -7,7 +7,7 @@ import { productDetailsModel } from '@/models/product-details.models';
 const getProductDetails = async () => {
   try {
     const response = await ProductDetailsService.getAll();
-
+    // console.log(response);
     return response.productDetails;
   } catch (err) {
     console.error(err);
@@ -55,7 +55,9 @@ const ListForm = () => {
           <p>Color: {productDetails.color}</p>
           <p>Size: {productDetails.size}</p>
           <p>Storage: {productDetails.storage}</p>
-          <p>Devices: {productDetails.devices}</p>
+          <p>Devices: {`${productDetails.devices}`}</p>
+          <p>Image: </p>
+          <img className='max-w-44' src={productDetails.img}></img>
 
           <button
             onClick={() =>

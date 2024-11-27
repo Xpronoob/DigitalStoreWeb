@@ -8,6 +8,7 @@ import { CartItemsModel } from '@/models/cart-items.model';
 const getAllProducts = async () => {
   try {
     const response = await ProductService.getAllProducts();
+    // console.log(response);
     return response;
   } catch (err) {
     console.error(err);
@@ -89,6 +90,7 @@ const ProductList = () => {
         productDetail.product_details_id !== undefined ? (
           <div key={productDetail.product_details_id} className='p-2'>
             <p>Product Name: {productDetail.products?.product_name}</p>
+            <img className='max-w-44' src={productDetail.img}></img>
             <p>Detail Name: {productDetail.details_name}</p>
             <p>Price: {productDetail.price}</p>
             <p>Stock: {productDetail.quantity}</p>

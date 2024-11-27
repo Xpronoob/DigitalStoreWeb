@@ -9,6 +9,7 @@ export interface productDetailsModel {
   size?: string;
   storage?: string;
   devices?: string;
+  img?: string;
   active?: boolean;
   products?: {
     product_id?: number;

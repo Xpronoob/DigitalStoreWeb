@@ -14,6 +14,13 @@ export const schema = z.object({
     required_error: 'El precio del detalle del producto es obligatorio'
   }),
   quantity: z.number().optional(),
+  image: z
+    .instanceof(File)
+    .optional()
+    .refine(
+      (file) => file?.size! || 0 <= 100 * 1024 * 1024,
+      'El tamaño del archivo no puede exceder los 100 MB'
+    ),
   active: z.boolean({
     required_error: 'El estado del detalle del producto es obligatorio'
   }),

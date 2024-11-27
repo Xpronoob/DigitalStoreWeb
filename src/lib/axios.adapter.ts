@@ -13,13 +13,13 @@ export class AxiosAdapter {
     return response.data;
   }
 
-  static async postRequest(url: string, body: any) {
-    const response = await axiosInstance.post(url, body);
+  static async postRequest(url: string, body: any, config?: object) {
+    const response = await axiosInstance.post(url, body, config);
     return response.data;
   }
 
-  static async patchRequest(url: string, body: any) {
-    const response = await axiosInstance.patch(url, body);
+  static async patchRequest(url: string, body: any, config?: object) {
+    const response = await axiosInstance.patch(url, body, config);
     return response.data;
   }
 

@@ -15,7 +15,8 @@ const CreateForm = () => {
   const {
     control,
     handleSubmit,
-    formState: { errors }
+    formState: { errors },
+    setValue
   } = useForm<FormValues>({
     resolver: zodResolver(schema),
     mode: 'onBlur',
@@ -65,6 +66,22 @@ const CreateForm = () => {
         type='text'
         error={errors.details_name}
       />
+
+      <div>
+        <label htmlFor='image'>Imagen del producto</label>
+        <input
+          id='image'
+          type='file'
+          accept='image/*'
+          onChange={(e) => {
+            const file = e.target.files?.[0];
+            if (file) {
+              setValue('image', file);
+            }
+          }}
+        />
+        {errors.image && <p>{errors.image.message}</p>}
+      </div>
 
       <InputForm<FormValues>
         fieldKey='description'
