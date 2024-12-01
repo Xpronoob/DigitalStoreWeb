@@ -31,6 +31,7 @@ const ProductList = () => {
     product_details_id: number,
     product_name: string,
     price: number,
+    img: string,
     stock: number
   ) => {
     const quantityToAdd = quantities[product_details_id] || 1;
@@ -41,7 +42,8 @@ const ProductList = () => {
       product_details: {
         product_details_id: product_details_id,
         details_name: product_name,
-        price: price
+        price: price,
+        img: img
       }
     };
 
@@ -112,6 +114,7 @@ const ProductList = () => {
                   productDetail.product_details_id!,
                   productDetail.details_name!,
                   productDetail.price!,
+                  productDetail.img!,
                   productDetail.quantity!
                 )
               }

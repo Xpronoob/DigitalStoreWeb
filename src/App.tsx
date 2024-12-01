@@ -4,10 +4,10 @@ import { BrowserRouter, Route } from 'react-router-dom';
 import RoutesWithNotFound from './utils/RoutesWithNotFound.utility';
 import { AuthGuard } from './guards/auth.guard';
 import RoleGuard from './guards/role.guard';
-
-// LAYOUTS
-// const PublicLayout = lazy(() => import('./layouts/PublicLayout/PublicLayout'));
 import PublicLayout from './layouts/PublicLayout/PublicLayout';
+import Checkout from './components/Public/Checkout/Checkout';
+
+// const PublicLayout = lazy(() => import('./layouts/PublicLayout/PublicLayout'));
 const AdminLayout = lazy(() => import('./layouts/AdminLayout/AdminLayout'));
 const PrivateLayout = lazy(
   () => import('./layouts/PrivateLayout/PrivateLayout')
@@ -109,6 +109,7 @@ function App() {
             <Route index element={<PublicIndex />} />
             <Route path={'/login'} element={<Login />} />
             <Route path={'/register'} element={<Register />} />
+            <Route path={'/checkout'} element={<Checkout />} />
           </Route>
 
           {/* AUTHENTICATED */}

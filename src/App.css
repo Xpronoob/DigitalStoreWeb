@@ -1,0 +1,8 @@
+html {
+  background-color: #f9fafb;
+  color: #111827;
+}
+html.dark {
+  background-color: #0f172a;
+  color: #e5e7eb;
+}

@@ -9,6 +9,7 @@ export interface CartItemsModel {
     product_id?: number;
     details_name?: string;
     description?: string;
+    img?: string;
     active?: boolean;
     price?: number;
     quantity?: number;

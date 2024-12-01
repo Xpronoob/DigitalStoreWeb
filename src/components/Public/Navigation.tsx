@@ -43,7 +43,7 @@ function Navigation({ toggleCart }: { toggleCart: () => void }) {
       <button onClick={toggleTheme}>{theme === 'dark' ? '🌙' : '🌞'}</button>
       <Link
         to='/'
-        className='text-gray-800 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-base font-medium'
+        className='text-gray-800 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-base font-medium dark:text-white'
       >
         Home
       </Link>
@@ -51,13 +51,13 @@ function Navigation({ toggleCart }: { toggleCart: () => void }) {
         <>
           <Link
             to='/login'
-            className='text-gray-800 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-base font-medium'
+            className='text-gray-800 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-base font-medium dark:text-white'
           >
             Login
           </Link>
           <Link
             to='/register'
-            className='text-gray-800 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-base font-medium'
+            className='text-gray-800 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-base font-medium dark:text-white'
           >
             Register
           </Link>
@@ -66,7 +66,7 @@ function Navigation({ toggleCart }: { toggleCart: () => void }) {
         <>
           <Link
             to='/private/profile'
-            className='text-gray-800 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-base font-medium'
+            className='text-gray-800 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-base font-medium dark:text-white'
           >
             Profile
           </Link>
@@ -76,7 +76,7 @@ function Navigation({ toggleCart }: { toggleCart: () => void }) {
       {user?.roles?.includes('admin') && (
         <Link
           to='/admin'
-          className='text-gray-800 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-base font-medium'
+          className='text-gray-800 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-base font-medium dark:text-white'
         >
           Admin
         </Link>
