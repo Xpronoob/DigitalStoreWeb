@@ -135,7 +135,7 @@ const Checkout = () => {
   }
 
   return (
-    <div className='md:flex w-full md:justify-center h-screen bg-gray-50 dark:bg-slate-900 text-gray-900 dark:text-gray-200'>
+    <div className='md:flex w-full md:justify-center h-full bg-gray-50 dark:bg-slate-900 text-gray-900 dark:text-gray-200'>
       <div className='w-full md:w-1/2'>
         <h4 className='text-2xl flex p-2 items-center justify-center text-yellow-400'>
           Items for purchase
@@ -146,19 +146,13 @@ const Checkout = () => {
               key={item.product_details_id}
               className='p-2 flex items-center justify-evenly'
             >
-              {/* <p>ID Detail: {item.product_details_id}</p> */}
-              {/* <p>ID Cart: {item.cart_items_id}</p> */}
               <img src={item.product_details?.img} alt='' className='h-24' />
               <p className='px-2'>x{item.quantity}</p>
               <div>
                 <p className='px-2'>{item.product_details?.details_name}</p>
-                {/* <p>Price: ${item.product_details?.price}</p> */}
                 <p className='px-2'>
                   ${item.product_details?.price! * item.quantity}
                 </p>
-                {/* <p>
-                    Subtotal: ${item.product_details?.price! * item.quantity}
-                  </p> */}
               </div>
             </div>
           ))
@@ -166,7 +160,7 @@ const Checkout = () => {
           <div className='p-2 min-w-60'>No items in the cart</div>
         )}
       </div>
-      <div className={`w-full md:w-1/2`}>
+      <div className='w-full md:w-1/2 z-0'>
         <div className='bg-gray-50 dark:bg-slate-900 text-gray-900 dark:text-gray-200'>
           <div className='w-3/4 mx-auto'>
             <h4 className='text-2xl text-yellow-400 flex justify-center p-2'>
