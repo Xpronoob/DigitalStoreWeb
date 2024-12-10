@@ -22,6 +22,8 @@ const Checkout = () => {
     components: 'card-fields,buttons'
   };
 
+  const clearCart = useCartStore((state) => state.clearCart);
+
   const [billingAddress, setBillingAddress] = useState({
     addressLine1: '',
     addressLine2: '',
@@ -53,6 +55,7 @@ const Checkout = () => {
           headers: {
             'Content-Type': 'application/json'
           },
+          credentials: 'include',
           // use the "body" param to optionally pass additional order information
           // like product ids and quantities
 
@@ -63,6 +66,17 @@ const Checkout = () => {
       );
 
       const orderData = await response.json();
+
+      if (orderData.length > 0) {
+        let orderError = '';
+        orderData.forEach((error: string) => {
+          orderError += error + '. ';
+        });
+        setMessage(orderError);
+        return orderError;
+      } else {
+        setMessage('');
+      }
 
       if (orderData.id) {
         return orderData.id;
@@ -88,7 +102,13 @@ const Checkout = () => {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
-          }
+          },
+
+          credentials: 'include',
+
+          body: JSON.stringify({
+            cart: cartItems
+          })
         }
       );
 
@@ -118,15 +138,23 @@ const Checkout = () => {
       } else {
         // (3) Successful transaction -> Show confirmation or thank you message
         // Or go to another URL:  actions.redirect('thank_you.html');
-        console.log(
-          'Capture result',
-          orderData,
-          JSON.stringify(orderData, null, 2)
-        );
-        return `Transaction ${transaction.status}: ${transaction.id}. See console for all available details`;
+
+        //todo: clear shopping cart
+        clearCart();
+        // console.log(
+        //   'Capture result',
+        //   orderData,
+        //   JSON.stringify(orderData, null, 2)
+        // );
+        // return `Transaction ${transaction.status}: ${transaction.id}. See console for all available details`;
+
+        const message = `Compra completada exitosamente $${orderData.total_amount}`;
+
+        return message;
       }
     } catch (error) {
-      return `Sorry, your transaction could not be processed...${error}`;
+      // return `Sorry, your transaction could not be processed...${error}`;
+      return `${error}`;
     }
   }
 
@@ -157,7 +185,12 @@ const Checkout = () => {
             </div>
           ))
         ) : (
-          <div className='p-2 min-w-60'>No items in the cart</div>
+          <div className='p-2 flex flex-col justify-center items-center'>
+            <p>No items in the cart</p>
+            <a href='/'>
+              <button className='border p-1'>Continue Shopping</button>
+            </a>
+          </div>
         )}
       </div>
       <div className='w-full md:w-1/2 z-0'>
@@ -292,7 +325,7 @@ const SubmitPayment = ({ isPaying, setIsPaying, billingAddress }: any) => {
 };
 
 const Message = ({ content }: any) => {
-  return <p>{content}</p>;
+  return <p className='flex justify-center text-red-500 text-xl'>{content}</p>;
 };
 
 export default Checkout;
